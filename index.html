@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CareGuide – AI Health Assistant Demo</title>
+<style>
+:root{--bg:#e8eef1;--card:#fff;--ink:#14222b;--mut:#5b6b75;--pri:#0f7b7b;--priInk:#fff;--line:#d9e1e5;--soft:#e4f4f2;--warn:#e5484d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1317;--card:#18222a;--ink:#eaf1f4;--mut:#9fb0ba;--pri:#35b5b0;--priInk:#06201f;--line:#2a3943;--soft:#12302f}}
+:root[data-theme="dark"]{--bg:#0d1317;--card:#18222a;--ink:#eaf1f4;--mut:#9fb0ba;--pri:#35b5b0;--priInk:#06201f;--line:#2a3943;--soft:#12302f}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+.wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;align-items:flex-start;padding:20px 12px}
+.phone{position:relative;width:360px;max-width:100%;height:760px;background:var(--card);border:8px solid #1c2630;border-radius:36px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.hdr{height:58px;background:var(--pri);color:var(--priInk);display:flex;align-items:center;gap:10px;padding:0 14px;font-weight:700;font-size:19px}
+.hdr button{background:none;border:0;color:inherit;font-size:28px;cursor:pointer;padding:0 6px}
+.scr{height:calc(100% - 58px);overflow:auto;padding:16px 16px 210px}
+.scr>div{display:none}.scr>div.on{display:block}
+h2{margin:4px 0 12px;font-size:21px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tap{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;font-size:18px;font-weight:600;display:block;width:100%;text-align:left;color:var(--ink)}
+.grid .tap{text-align:center;padding:20px 8px}.tap small{display:block;font-weight:400;color:var(--mut);font-size:15px;margin-top:2px}
+.tap .ic{font-size:32px;display:block;margin-bottom:4px}
+.list{display:flex;flex-direction:column;gap:12px}
+.hello{background:var(--soft);border-radius:16px;padding:14px;margin-bottom:14px}.hello small{color:var(--mut)}
+.sum{border:2px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px;font-size:18px}.sum div{padding:4px 0}
+.btn{display:block;width:100%;padding:16px;border-radius:14px;border:0;font-size:20px;font-weight:700;cursor:pointer;margin-top:10px;background:var(--pri);color:var(--priInk)}
+.btn.alt{background:none;border:2px solid var(--line);color:var(--ink)}
+.ring{position:absolute;pointer-events:none;border-radius:18px;border:4px solid #ffc83d;box-shadow:0 0 0 999px rgba(0,0,0,.5);z-index:5;transition:all .35s;animation:pulse 1.3s infinite;display:none}
+@keyframes pulse{50%{border-color:#fff}}
+.dock{position:absolute;left:0;right:0;bottom:0;background:var(--card);border-top:2px solid var(--line);padding:10px 12px 12px;z-index:6}
+.say{display:flex;gap:10px;align-items:flex-start}
+.av{flex:none;width:58px;height:58px;border-radius:50%;overflow:hidden;border:3px solid var(--pri)}.av.talk{animation:bob .5s 3}
+@keyframes bob{50%{transform:scale(1.08)}}
+.bub{background:var(--soft);border-radius:16px;padding:10px 12px;font-size:18px;line-height:1.35;flex:1}
+.you{font-size:14px;color:var(--mut);margin:6px 0 0 68px;min-height:18px}
+.ctl{display:flex;gap:6px;margin-top:6px}
+.ctl input{flex:1;min-width:0;padding:11px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-size:16px}
+.ctl button{border:0;border-radius:12px;background:var(--pri);color:var(--priInk);font-size:20px;padding:0 13px;cursor:pointer}
+.ctl button.mic.on{background:var(--warn);color:#fff}
+.row2{display:flex;gap:8px;margin-top:8px}.row2 button{flex:1;border:2px solid var(--line);background:none;color:var(--ink);border-radius:12px;padding:8px;font-size:15px;cursor:pointer}
+#callbtn{display:none;border-color:var(--warn);color:var(--warn);font-weight:700}
+.call{position:absolute;inset:0;background:var(--card);z-index:20;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:10px}
+.call .av{width:120px;height:120px}.call h3{margin:6px 0 0;font-size:22px}
+.side{width:300px;max-width:100%;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.side h3{margin:0 0 10px;font-size:17px}.side p{margin:8px 0;font-size:14px;color:var(--mut)}.side b{color:var(--ink)}
+.meter{height:12px;background:var(--line);border-radius:8px;overflow:hidden}.meter i{display:block;height:100%;width:0;background:var(--warn);transition:width .4s}
+.side select,.side button{width:100%;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-size:15px;margin-top:6px;cursor:pointer}
+</style></head><body>
+<div class="wrap">
+<div class="phone" id="phone">
+  <div class="hdr"><button id="back" aria-label="Back">‹</button><span id="ttl">CareGuide</span></div>
+  <div class="scr" id="scr">
+    <div id="home" class="on">
+      <div class="hello"><b>Good morning, Mr Tan</b><br><small>🔒 Singpass linked · Mei is your care guide</small></div>
+      <div class="grid">
+        <button class="tap" data-id="t-appt"><span class="ic">📅</span>Appointments</button>
+        <button class="tap" data-id="t-rec"><span class="ic">📋</span>Health Records</button>
+        <button class="tap" data-id="t-sub"><span class="ic">💳</span>Subsidies</button>
+        <button class="tap" data-id="t-med"><span class="ic">💊</span>Medications</button>
+      </div>
+    </div>
+    <div id="hosp"><h2>Choose a hospital</h2><div class="list">
+      <button class="tap" data-id="h-sgh">Singapore General Hospital<small>Outram</small></button>
+      <button class="tap" data-id="h-nuh">National University Hospital (NUH)<small>Kent Ridge</small></button>
+      <button class="tap" data-id="h-ttsh">Tan Tock Seng Hospital<small>Novena</small></button></div></div>
+    <div id="spec"><h2>Choose a specialty</h2><div class="list">
+      <button class="tap" data-id="sp-card">❤️ Cardiology<small>Last visit: 12 Aug</small></button>
+      <button class="tap" data-id="sp-2">🦴 Orthopaedics</button>
+      <button class="tap" data-id="sp-3">👁️ Ophthalmology</button></div></div>
+    <div id="slot"><h2>Choose a time</h2><div class="list">
+      <button class="tap" data-id="sl-1">Tue 10 Nov · 9:30 am</button>
+      <button class="tap" data-id="sl-2">Wed 11 Nov · 2:00 pm</button>
+      <button class="tap" data-id="sl-3">Fri 13 Nov · 10:15 am</button></div></div>
+    <div id="conf"><h2>Check your booking</h2><div class="sum">
+      <div>🏥 <b>NUH</b>, Kent Ridge</div><div>❤️ Cardiology</div><div>📅 <b>Tue 10 Nov</b>, 9:30 am</div><div>💳 Subsidy applied: <b>Pioneer Generation</b></div></div>
+      <button class="btn" data-id="confirm">Confirm booking</button>
+      <button class="btn alt" data-id="cancel">Cancel</button></div>
+    <div id="done" style="text-align:center"><div style="font-size:72px">✅</div><h2>Booking confirmed</h2><p>NUH Cardiology<br><b>Tue 10 Nov, 9:30 am</b></p>
+      <button class="btn" data-id="home">Back to home</button></div>
+  </div>
+  <div class="ring" id="ring"></div>
+  <div class="dock">
+    <div class="say"><div class="av" id="av"></div><div class="bub" id="msg"></div></div>
+    <div class="you" id="you"></div>
+    <div class="ctl"><input id="inp" placeholder="Type or tap the mic…" aria-label="Message"><button class="mic" id="mic" aria-label="Speak">🎤</button><button id="send" aria-label="Send">➤</button></div>
+    <div class="row2"><button id="lost">I’m lost</button><button id="callbtn">📞 Call a person</button></div>
+  </div>
+  <div class="call" id="call"><div class="av" id="nurse"></div><h3>Nurse Lim</h3><div style="color:var(--mut)">HealthHub Care Team</div>
+    <div id="cst" style="font-size:20px;font-weight:700">Connecting…</div>
+    <p style="color:var(--mut);font-size:15px">She can see where you are in the booking, so you won’t need to explain again.</p>
+    <button class="btn" id="end" style="background:var(--warn);color:#fff;max-width:240px">End call</button></div>
+</div>
+
+<div class="side">
+  <h3>🎬 Demo guide</h3>
+  <p>Try: tap the 🎤 (simulated voice), or type “book appointment at NUH”. Then follow the glowing highlight. To see the human handoff, tap wrong buttons or ‹ Back 3 times.</p>
+  <p><b>AI language</b></p>
+  <select id="lang"><option value="en">English</option><option value="zh">中文</option><option value="ms">Bahasa Melayu</option><option value="ta">தமிழ்</option></select>
+  <p style="margin-top:14px"><b>Behind the scenes</b></p>
+  <p>Identity: <b>Singpass-linked ✓</b><br>Pattern noticed: <b>Cardiology review every ~3 months</b></p>
+  <p>Confusion signal: <b id="sc">0</b></p>
+  <div class="meter"><i id="mt"></i></div>
+  <button id="reset">↺ Restart demo</button>
+  <button id="theme">◐ Light / dark</button>
+</div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const av=c=>`<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#cdeeea"/><path d="M8 60c2-14 12-19 22-19s20 5 22 19z" fill="${c}"/><circle cx="30" cy="27" r="12" fill="#f2c9a5"/><path d="M17 26c0-12 7-16 13-16s13 4 13 16c-3-6-8-8-13-8s-10 2-13 8z" fill="#2b2b33"/><circle cx="25.5" cy="28" r="1.4" fill="#2b2b33"/><circle cx="34.5" cy="28" r="1.4" fill="#2b2b33"/><path d="M26 33q4 3 8 0" stroke="#b5654a" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M27 41l3 6 3-6" fill="#fff"/></svg>`;
+$('#av').innerHTML=av('#0f7b7b');$('#nurse').innerHTML=av('#3b6fd4');
+const T={
+greet:{en:"Hello Mr Tan! I’m Mei, your care guide. What would you like to do today?",zh:"陈先生您好！我是美玲，您的健康助手。今天想办什么事？",ms:"Helo Encik Tan! Saya Mei, pemandu penjagaan anda. Apa yang anda mahu lakukan hari ini?",ta:"வணக்கம் திரு டான்! நான் மெய், உங்கள் உதவியாளர். இன்று என்ன செய்ய விரும்புகிறீர்கள்?"},
+s1:{en:"Sure, let’s book at NUH. Tap the glowing ‘Appointments’ button.",zh:"好的，我们来预约国大医院。请点亮着的“Appointments”按钮。",ms:"Baik, kita buat temu janji di NUH. Tekan butang ‘Appointments’ yang bercahaya.",ta:"சரி, NUH-ல் சந்திப்பு பதிவு செய்வோம். ஒளிரும் ‘Appointments’ பொத்தானை அழுத்துங்கள்."},
+s2:{en:"Now tap National University Hospital (NUH).",zh:"现在请点“National University Hospital (NUH)”。",ms:"Sekarang tekan National University Hospital (NUH).",ta:"இப்போது National University Hospital (NUH) என்பதை அழுத்துங்கள்."},
+s3:{en:"Your last visit here was Cardiology in August. Shall we book that again? Tap Cardiology.",zh:"您八月份在这里看过心脏科。再约一次吗？请点“Cardiology”。",ms:"Lawatan terakhir anda di sini ialah Kardiologi pada Ogos. Mahu tempah semula? Tekan Cardiology.",ta:"ஆகஸ்டில் இங்கு இருதயவியல் பிரிவில் பார்த்தீர்கள். மீண்டும் பதிவு செய்யலாமா? ‘Cardiology’ அழுத்துங்கள்."},
+s4:{en:"The earliest slot is Tue 10 Nov, 9:30 am. Tap it, or pick a time you prefer.",zh:"最早的时间是11月10日（周二）上午9:30。请点它，或选您方便的时间。",ms:"Slot terawal ialah Sel 10 Nov, 9:30 pagi. Tekan, atau pilih masa lain.",ta:"மிக விரைவான நேரம் செவ். 10 நவ., காலை 9:30. அதை அழுத்துங்கள் அல்லது வேறு நேரம் தேர்ந்தெடுங்கள்."},
+s5:{en:"Please check the details. The decision is yours — tap Confirm when you’re happy.",zh:"请核对资料。决定权在您——确认无误后请点“Confirm”。",ms:"Sila semak butiran. Keputusan di tangan anda — tekan Confirm bila sudah bersedia.",ta:"விவரங்களைச் சரிபார்க்கவும். முடிவு உங்களுடையது — திருப்தியானால் ‘Confirm’ அழுத்துங்கள்."},
+s6:{en:"All done, Mr Tan! I’ll remind you the day before. Anything else?",zh:"办好了，陈先生！我会在前一天提醒您。还需要别的吗？",ms:"Siap, Encik Tan! Saya akan ingatkan sehari sebelum itu. Ada lagi?",ta:"முடிந்தது திரு டான்! முதல் நாள் நினைவூட்டுவேன். வேறு ஏதாவது?"},
+help:{en:"I can help with appointments, records and subsidies. Try saying ‘Book an appointment at NUH’.",zh:"我可以帮您预约、查看记录和津贴。试试说“预约国大医院”。",ms:"Saya boleh bantu dengan temu janji, rekod dan subsidi. Cuba sebut ‘Buat temu janji di NUH’.",ta:"சந்திப்புகள், பதிவுகள், மானியங்களில் உதவ முடியும். ‘NUH-ல் சந்திப்பு’ என்று சொல்லுங்கள்."},
+nudge:{en:"That’s not the glowing one — no problem, try the highlighted button.",zh:"不是这个亮的按钮，没关系，请点亮着的。",ms:"Bukan yang bercahaya — tidak mengapa, cuba butang yang diserlahkan.",ta:"அது ஒளிரும் பொத்தான் அல்ல — பரவாயில்லை, ஒளிரும் பொத்தானை அழுத்துங்கள்."},
+lost:{en:"It seems this is getting tricky — no worries! Would you like me to connect you to a real person?",zh:"好像有点复杂，没关系！要我帮您接通真人吗？",ms:"Nampaknya agak sukar — tidak mengapa! Mahu saya sambungkan anda kepada orang sebenar?",ta:"கொஞ்சம் சிரமமாக உள்ளது போல — பரவாயில்லை! உண்மையான ஒருவருடன் இணைக்கட்டுமா?"}};
+const voice={en:"Book an appointment at NUH",zh:"我要预约国大医院",ms:"Saya nak buat temu janji di NUH",ta:"NUH-ல் சந்திப்பு பதிவு செய்ய வேண்டும்"};
+const S=[{s:'home',t:null,k:'greet'},{s:'home',t:'t-appt',k:'s1'},{s:'hosp',t:'h-nuh',k:'s2'},{s:'spec',t:'sp-card',k:'s3'},{s:'slot',t:'sl-1',k:'s4'},{s:'conf',t:'confirm',k:'s5'},{s:'done',t:null,k:'s6'}];
+const TT={home:'CareGuide',hosp:'Appointments',spec:'Appointments',slot:'Appointments',conf:'Confirm',done:'Done'};
+let lang='en',step=0,wrong=0,back=0,offered=false,key='greet',timer;
+function render(){$('#msg').textContent=T[key][lang];const a=$('#av');a.classList.remove('talk');void a.offsetWidth;a.classList.add('talk')}
+function say(k){key=k;render()}
+function place(){const r=$('#ring'),t=S[step].t;if(!t){r.style.display='none';return}
+ const el=document.querySelector('[data-id="'+t+'"]'),p=$('#phone').getBoundingClientRect(),b=el.getBoundingClientRect();
+ r.style.display='block';r.style.left=(b.left-p.left-12)+'px';r.style.top=(b.top-p.top-12)+'px';r.style.width=(b.width+8)+'px';r.style.height=(b.height+8)+'px'}
+function go(i){step=i;document.querySelectorAll('.scr>div').forEach(d=>d.classList.toggle('on',d.id===S[i].s));
+ $('#ttl').textContent=TT[S[i].s];$('#scr').scrollTop=0;say(S[i].k);requestAnimationFrame(()=>requestAnimationFrame(place))}
+function meter(){const s=wrong+back;$('#sc').textContent=s;$('#mt').style.width=Math.min(100,s*33)+'%';if(s>=3&&!offered)offer()}
+function offer(){offered=true;say('lost');$('#callbtn').style.display='block'}
+$('#scr').addEventListener('click',e=>{const el=e.target.closest('[data-id]');if(!el)return;const id=el.dataset.id;
+ if(step==0){say('help');return}
+ if(step==6){go(0);return}
+ if(id===S[step].t||(step==4&&id.startsWith('sl-')))go(step+1);
+ else{wrong++;if(!offered)say('nudge');meter()}});
+$('#back').onclick=()=>{back++;if(step>=2&&step<=5)go(step-1);meter()};
+function submit(txt){if(!txt)return;$('#you').textContent='You: '+txt;$('#inp').value='';
+ if(step==0){/book|appoint|nuh|预约|temu|janji|சந்திப்பு/i.test(txt)?go(1):say('help')}else render()}
+$('#send').onclick=()=>submit($('#inp').value.trim());
+$('#inp').onkeydown=e=>{if(e.key==='Enter')submit($('#inp').value.trim())};
+$('#mic').onclick=()=>{const m=$('#mic');m.classList.add('on');$('#you').textContent='🎤 Listening…';setTimeout(()=>{m.classList.remove('on');submit(voice[lang])},1300)};
+$('#lang').onchange=e=>{lang=e.target.value;render()};
+$('#lost').onclick=()=>{if(!offered)offer()};
+function startCall(){const c=$('#call');c.style.display='flex';$('#cst').textContent='Connecting…';let n=0;clearInterval(timer);
+ setTimeout(()=>{timer=setInterval(()=>{n++;$('#cst').textContent='Connected · 00:'+String(n).padStart(2,'0')},1000)},1500)}
+$('#callbtn').onclick=startCall;
+$('#end').onclick=()=>{clearInterval(timer);$('#call').style.display='none';wrong=back=0;offered=false;$('#callbtn').style.display='none';meter();say(S[step].k)};
+$('#reset').onclick=()=>{wrong=back=0;offered=false;$('#callbtn').style.display='none';$('#you').textContent='';meter();go(0)};
+$('#theme').onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue('--bg').trim()==='#0d1317';r.dataset.theme=d?'light':'dark';setTimeout(place,50)};
+addEventListener('resize',place);go(0);
+</script></body></html>
