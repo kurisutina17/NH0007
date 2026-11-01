@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en" data-theme="light"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CareHub – AI Health Assistant Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,10 +88,13 @@ body{font-family:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI','Not
 .lmenu button{display:block;width:100%;text-align:left;background:none;border:0;padding:12px 14px;font-size:17px;border-radius:10px;color:var(--ink);cursor:pointer;font-family:var(--fh)}.lmenu button.cur{background:var(--soft);font-weight:800}
 .seg{display:flex;gap:6px;background:var(--grey);border-radius:14px;padding:4px;margin:14px 0}.seg button{flex:1;border:0;background:none;padding:10px 4px;border-radius:11px;font-family:var(--fh);font-weight:700;font-size:15px;color:var(--mut);cursor:pointer}.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--sh)}
 .apl{display:none}.apl.on{display:block}.ap{box-shadow:var(--sh);border-radius:18px;padding:14px 16px;margin-bottom:12px;background:var(--card)}.ap b{display:block;font-family:var(--fh);font-size:18px}.ap small{color:var(--mut);font-size:15px}
+.tile,.g2 .tile{font-size:12px;line-height:1.25}.g2 .tile{padding:14px 6px;font-size:13px}.tile .ic{width:44px;height:44px;font-size:22px;margin-bottom:6px}
+.lmenu{top:auto;bottom:128px;left:12px}.row2 #lg{flex:none;padding:7px 12px}
+#stx{font-size:20px;line-height:1.4;margin:4px 2px 14px;font-weight:700}
 </style></head><body>
 <div class="wrap">
 <div class="phone" id="phone">
- <div class="hdr"><div class="hl"><button id="back" aria-label="Back">‹</button><button id="lg" aria-label="Language">🌐 EN</button></div><div id="ttl"></div><span id="ico">🔔⚙️</span></div>
+ <div class="hdr"><div class="hl"><button id="back" aria-label="Back">‹</button></div><div id="ttl"></div><span id="ico">🔔⚙️</span></div>
  <div class="lmenu" id="lmenu"><button data-l="0">English</button><button data-l="1">中文</button><button data-l="2">Bahasa Melayu</button><button data-l="3">தமிழ்</button></div>
  <div class="scr" id="scr">
   <div id="home" class="on">
@@ -174,23 +177,24 @@ body{font-family:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI','Not
   <div id="imm" class="pad"><h2>Immunisation records</h2><div class="sum"><div>Influenza <b>Oct 2025</b></div><div>Pneumococcal <b>Mar 2024</b></div><div>COVID-19 booster <b>Nov 2024</b></div></div></div>
  </div>
  <div class="ring" id="ring"></div>
- <button id="summon"><span class="av"></span>Need help?</button>
+ <button id="summon"><span class="av"></span><span id="sumt">Need help?</span></button>
  <div class="offer" id="offer"><div class="oc"><div class="av" id="oav"></div><p id="otx"></p><button class="btn" id="oyes"></button><button class="btn alt" id="ono"></button></div></div>
  <div class="dock">
   <div class="say"><div class="av" id="av"></div><div class="bub" id="msg"></div></div><div class="you" id="you"></div>
   <div class="ctl"><input id="inp" placeholder="e.g. dental check-up, flu jab, X-ray…" aria-label="Message"><button class="mic" id="mic" aria-label="Speak">🎤</button><button id="send" aria-label="Send">➤</button></div>
-  <div class="row2"><button id="lost">I’m lost</button><button id="close">✕ Close</button><button id="callbtn">📞 Call a person</button></div>
+  <div class="row2"><button id="lg" aria-label="Language">🌐 EN</button><button id="lost">I’m lost</button><button id="close">✕ Close</button><button id="callbtn">📞 Call a person</button></div>
  </div>
  <div class="nav"><button data-id="nav-home" class="act"><span class="i">🏠</span>Home</button><button data-id="nav-svc"><span class="i">▦</span>Services</button><button data-id="nav-prof"><span class="i">👥</span>Health Profiles</button></div>
- <div class="call" id="call"><div class="av" id="nurse"></div><h3>Nurse Lim</h3><div style="color:var(--mut)">Care Team</div>
+ <div class="offer" id="sw"><div class="oc"><div class="av" id="sav"></div><p id="stx"></p><button class="btn" id="syes"></button><button class="btn alt" id="sno"></button></div></div>
+ <div class="call" id="call"><div class="av" id="nurse"></div><h3>Nurse Lim</h3><div id="team" style="color:var(--mut)">Care Team</div>
   <div id="cst" style="font-size:20px;font-weight:700">Connecting…</div>
-  <p style="color:var(--mut);font-size:15px">She can see where you are, so you won’t need to explain again.</p>
+  <p id="note" style="color:var(--mut);font-size:15px">She can see where you are, so you won’t need to explain again.</p>
   <button class="btn" id="end" style="background:var(--warn);max-width:240px">End call</button></div>
 </div>
 <div class="side">
  <h3>🎬 Demo guide</h3>
  <p>The app works normally on its own, so click around freely. Tap <b>“Need help?”</b> to call Mei in, then tap 🎤 (simulated voice, tap repeatedly) or type one of: <b>book, refill medicine, lab reports, CHAS, pay bill</b>. Mei then guides you with the glowing highlight, and can start from whichever screen you’re on.</p>
- <p><b>Language:</b> use the 🌐 button at the top-left of the home page.</p>
+ <p><b>Language:</b> tap 🌐 in Mei’s panel (call her with “Need help?”).</p>
  <p style="margin-top:12px"><b>Behind the scenes</b><br>Singpass-linked ✓<br>Pattern: <b>Cardiology review every ~3 months</b></p>
  <p>Confusion signal: <b id="sc">0</b> (only counts while Mei is guiding; at 3 she offers a human call)</p><div class="meter"><i id="mt"></i></div>
  <button id="reset">↺ Restart demo</button><button id="theme">◐ Light / dark</button>
@@ -199,7 +203,7 @@ body{font-family:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI','Not
 const $=s=>$s(s),$s=s=>document.querySelector(s);
 const av=c=>`<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#cdeeea"/><path d="M8 60c2-14 12-19 22-19s20 5 22 19z" fill="${c}"/><circle cx="30" cy="27" r="12" fill="#f2c9a5"/><path d="M17 26c0-12 7-16 13-16s13 4 13 16c-3-6-8-8-13-8s-10 2-13 8z" fill="#2b2b33"/><circle cx="25.5" cy="28" r="1.4" fill="#2b2b33"/><circle cx="34.5" cy="28" r="1.4" fill="#2b2b33"/><path d="M26 33q4 3 8 0" stroke="#b5654a" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M27 41l3 6 3-6" fill="#fff"/></svg>`;
 $('#av').innerHTML=av('#0b9b64');$('#nurse').innerHTML=av('#3b6fd4');
-const T={ta0:["What kind of appointment do you need? Tell me, or tap one.","您需要哪种预约？请告诉我，或点一个选项。","Jenis temu janji apa yang anda perlukan? Beritahu saya, atau tekan satu.","எந்த வகை சந்திப்பு தேவை? சொல்லுங்கள் அல்லது ஒன்றை அழுத்துங்கள்."],b0:["Sure, let’s book at NUH. First, tap the glowing ‘Appointments’ button.","好的，我们来预约国大医院。请先点亮着的“Appointments”按钮。","Baik, kita buat temu janji di NUH. Mula-mula, tekan butang ‘Appointments’ yang bercahaya.","சரி, NUH-ல் சந்திப்பு பதிவு செய்வோம். முதலில் ஒளிரும் ‘Appointments’ பொத்தானை அழுத்துங்கள்."],
+const T={ta0:["What kind of appointment do you need? Tell me, or tap one.","您需要哪种预约？请告诉我，或点一个选项。","Jenis temu janji apa yang anda perlukan? Beritahu saya, atau tekan satu.","எந்த வகை சந்திப்பு தேவை? சொல்லுங்கள் அல்லது ஒன்றை அழுத்துங்கள்."],b0:["Sure, let’s book an appointment. First, tap the glowing ‘Appointments’ button.","好的，我们来预约。请先点亮着的“Appointments”按钮。","Baik, kita buat temu janji. Mula-mula, tekan butang ‘Appointments’ yang bercahaya.","சரி, சந்திப்பு பதிவு செய்வோம். முதலில் ஒளிரும் ‘Appointments’ பொத்தானை அழுத்துங்கள்."],
 sa:["Here are your upcoming, past and missed appointments. Tap ‘Make new appointment’.","这里是您即将到来、过去和错过的预约。请点“Make new appointment”。","Ini temu janji akan datang, lepas dan terlepas anda. Tekan ‘Make new appointment’.","இவை உங்கள் வரவிருக்கும், கடந்த மற்றும் தவறவிட்ட சந்திப்புகள். ‘Make new appointment’ அழுத்துங்கள்."],
 c1:["Let’s check your CHAS card. Tap ‘CHAS’.","来看您的CHAS卡。请点“CHAS”。","Mari semak kad CHAS anda. Tekan ‘CHAS’.","உங்கள் CHAS அட்டையைப் பார்ப்போம். ‘CHAS’ அழுத்துங்கள்."],
 c2:["This is your CHAS Blue card, valid until the end of 2027. Your subsidy is applied automatically at clinics.","这是您的CHAS蓝卡，有效期至2027年底。在诊所会自动享有津贴。","Ini kad CHAS Biru anda, sah hingga akhir 2027. Subsidi digunakan secara automatik di klinik.","இது உங்கள் CHAS நீல அட்டை, 2027 இறுதி வரை செல்லும். மருத்துவ நிலையங்களில் மானியம் தானாகவே பொருந்தும்."],
@@ -259,7 +263,10 @@ const SL=['Tue 10 Nov · 9:30 am','Wed 11 Nov · 2:00 pm','Fri 13 Nov · 10:15 a
 const detType=t=>{for(const k of ORD)if(TY[k].re.test(t))return k;return null};
 const ty=()=>TY[bk.type]||TY.gp;
 const kk=st=>typeof st.k==='function'?st.k():st.k;
-const M={ta1:n=>[`Got it — ‘${n}’. Tap the glowing tile.`,`好的——“${n}”。请点亮着的图标。`,`Baik — ‘${n}’. Tekan butang yang bercahaya.`,`சரி — ‘${n}’. ஒளிரும் பொத்தானை அழுத்துங்கள்.`],
+const M={sw:(a,b)=>[`You asked for ‘${a}’, but you tapped ‘${b}’. Which one would you like?`,`您要的是“${a}”，但点了“${b}”。您想选哪个？`,`Anda minta ‘${a}’, tetapi menekan ‘${b}’. Yang mana anda mahu?`,`நீங்கள் ‘${a}’ கேட்டீர்கள், ஆனால் ‘${b}’ அழுத்தினீர்கள். எது வேண்டும்?`],
+keep:b=>[`Choose ${b}`,`选择${b}`,`Pilih ${b}`,`${b} தேர்ந்தெடு`],
+back:a=>[`Go back to ${a}`,`回到${a}`,`Kembali ke ${a}`,`${a}-க்குத் திரும்பு`],
+ta1:n=>[`Got it — ‘${n}’. Tap the glowing tile.`,`好的——“${n}”。请点亮着的图标。`,`Baik — ‘${n}’. Tekan butang yang bercahaya.`,`சரி — ‘${n}’. ஒளிரும் பொத்தானை அழுத்துங்கள்.`],
 pp:()=>['Here are the polyclinics. Tap Bedok Polyclinic, your usual one, or choose another.','这是各个综合诊疗所。请点您常去的 Bedok Polyclinic，或选其他。','Ini senarai poliklinik. Tekan Bedok Polyclinic, yang biasa anda guna, atau pilih yang lain.','இவை பாலிகிளினிக்குகள். வழக்கமான Bedok Polyclinic அழுத்துங்கள் அல்லது வேறொன்றைத் தேர்ந்தெடுங்கள்.'],
 ph:()=>['Which hospital? Tap National University Hospital (NUH), where you usually go.','请问哪家医院？请点您常去的 National University Hospital (NUH)。','Hospital mana? Tekan National University Hospital (NUH), yang biasa anda kunjungi.','எந்த மருத்துவமனை? வழக்கமான National University Hospital (NUH) அழுத்துங்கள்.'],
 sv:n=>[`Now choose the service. I suggest ‘${n}’ — tap it, or pick another.`,`现在选择服务项目。建议选“${n}”，或选其他。`,`Sekarang pilih perkhidmatan. Saya cadangkan ‘${n}’ — tekan, atau pilih yang lain.`,`இப்போது சேவையைத் தேர்ந்தெடுங்கள். ‘${n}’ பரிந்துரைக்கிறேன் — அழுத்துங்கள் அல்லது வேறொன்றைத் தேர்ந்தெடுங்கள்.`]};
@@ -277,7 +284,7 @@ let L=0,fl=null,i=0,wrong=0,back=0,offered=false,key='greet',mi=0,timer,ai=false
 const cur=()=>fl?F[fl][i]:null;
 function say(k){key=k;render()}
 function render(){$('#msg').textContent=(Array.isArray(key)?key:T[key])[L];const a=$('#av');a.classList.remove('talk');void a.offsetWidth;a.classList.add('talk')}
-function show(id){cs=id;fill(id);$('#lg').style.display=id==='home'?'block':'none';$('#lmenu').classList.remove('on');document.querySelectorAll('.scr>div').forEach(d=>d.classList.toggle('on',d.id===id));
+function show(id){cs=id;fill(id);$('#lmenu').classList.remove('on');document.querySelectorAll('.scr>div').forEach(d=>d.classList.toggle('on',d.id===id));
  $('#back').style.display=['home','svc','prof'].includes(id)?'none':'block';$('#ico').style.visibility=id==='home'?'visible':'hidden';
  $('#ttl').innerHTML=id==='home'?LOGO:(TT[id]||'');
  const t=id==='svc'||id==='prof'?id:'home';document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('act',b.dataset.id==='nav-'+t));$('#scr').scrollTop=0}
@@ -288,14 +295,15 @@ function place(){const r=$('#ring'),st=cur(),el=st&&st.t&&tgt(st.t);if(!el){r.st
 function showStep(){const st=cur();show(st.s);say(kk(st));requestAnimationFrame(()=>{const el=st.t&&tgt(st.t);if(el&&el.closest('#scr')){const sb=$('#scr').getBoundingClientRect();$('#scr').scrollTop+=el.getBoundingClientRect().top-sb.top-70}place()})}
 function begin(n,txt){fl=n;if(n==='book'){const w=detType(txt||'');if(w)setWant(w)}const k=F[n].findIndex(s=>s.s===cs&&s.t);i=k<0?0:k;showStep()}
 function resetSig(){wrong=back=0;offered=false;$('#callbtn').style.display='none';meter()}
-function setAI(on){ai=on;$('#offer').classList.remove('on');$('#phone').classList.toggle('ai',on);if(!on){fl=null;i=0;resetSig()}else say('greet');place()}
+function setAI(on){ai=on;$('#offer').classList.remove('on');$('#sw').classList.remove('on');$('#phone').classList.toggle('ai',on);if(!on){fl=null;i=0;resetSig()}else say('greet');place()}
 function idle(){fl=null;i=0;resetSig();hist=[];setWant(null);show('home');if(ai)say('greet');place()}
 function go(id){if(cs&&cs!==id)hist.push(cs);show(id)}
 function meter(){const s=wrong+back;$('#sc').textContent=s;$('#mt').style.width=Math.min(100,s*33)+'%';if(s>=3&&!offered){offered=true;say('lost');$('#callbtn').style.display='block';openOffer()}}
 const NX={'h-new':'atype','t-appt':'appts','a-new':'atype','h-nuh':'spec','h-sgh':'spec','h-ttsh':'spec','sp-card':'slot','sp-2':'slot','sp-3':'slot','sl-1':'conf','sl-2':'conf','sl-3':'conf','confirm':'done','t-lab':'labs','lab-1':'labd','lab-2':'labd','t-pay':'bills','bill-1':'bill','bill-2':'bill','pay-conf':'paid','t-refill':'rx','rx-1':'rconf','rx-2':'rconf','r-conf':'rdone','t-chas':'chas','t-imm':'imm'};
 function tap(id){
- rec(id);
  const st=cur();
+ if(st&&st.s==='atype'&&want&&id.startsWith('ty-')&&id!=='ty-'+want){askSwitch(id.slice(3));return}
+ rec(id);
  if(st){if(st.t===null||id==='cancel'){idle();return}
   if(fl==='book'&&i===0&&id==='h-new'){i=2;showStep();return}
   if(id===st.t||(st.any&&id.startsWith(st.any))){i++;while(F[fl][i]&&F[fl][i].skip&&F[fl][i].skip())i++;showStep()}else{wrong++;if(!offered)say('nudge');meter()}return}
@@ -305,19 +313,35 @@ function tap(id){
 $('#phone').addEventListener('click',e=>{const el=e.target.closest('[data-id]');if(el)tap(el.dataset.id)});
 $('#scr').addEventListener('scroll',place);
 $('#back').onclick=()=>{const st=cur();if(st){back++;meter();if(st.t!==null&&i>0){i--;while(F[fl][i].skip&&F[fl][i].skip())i--;showStep()}else{fl=null;i=0;place();show(hist.pop()||'home')}return}show(hist.pop()||'home')};
-function submit(txt){if(!txt)return;$('#you').textContent='You: '+txt;$('#inp').value='';
+function submit(txt){if(!txt)return;$('#you').textContent=UI.you[L]+txt;$('#inp').value='';
  if(fl){const w=detType(txt);if(fl==='book'&&cur().s==='atype'&&w){setWant(w);showStep()}else render();return}const m=I.find(x=>x.re.test(txt))||(detType(txt)?I[0]:null);m?begin(m.n,txt):say('help')}
 $('#send').onclick=()=>submit($('#inp').value.trim());
 $('#inp').onkeydown=e=>{if(e.key==='Enter')submit($('#inp').value.trim())};
-$('#mic').onclick=()=>{const b=$('#mic');b.classList.add('on');$('#you').textContent='🎤 Listening…';setTimeout(()=>{b.classList.remove('on');const x=I[mi++%I.length];submit(fl?'…':x.v[L])},1300)};
+$('#mic').onclick=()=>{const b=$('#mic');b.classList.add('on');$('#you').textContent=UI.lis[L];setTimeout(()=>{b.classList.remove('on');const x=I[mi++%I.length];submit(fl?'…':x.v[L])},1300)};
+const UI={
+sum:["Need help?","需要帮助？","Perlu bantuan?","உதவி வேண்டுமா?"],
+ph:["e.g. dental check-up, flu jab, X-ray…","例如：看牙、打流感针、X光…","cth: pemeriksaan gigi, suntikan selesema, X-ray…","எ.கா: பல் பரிசோதனை, காய்ச்சல் தடுப்பூசி, X-ray…"],
+lost:["I’m lost","我不会操作","Saya tersesat","எனக்குப் புரியவில்லை"],
+close:["✕ Close","✕ 关闭","✕ Tutup","✕ மூடு"],
+call:["📞 Call a person","📞 联系真人","📞 Hubungi orang","📞 ஒருவரை அழைக்க"],
+you:["You: ","您：","Anda: ","நீங்கள்: "],
+lis:["🎤 Listening…","🎤 正在聆听…","🎤 Mendengar…","🎤 கேட்கிறேன்…"],
+team:["Care Team","护理团队","Pasukan Penjagaan","பராமரிப்பு குழு"],
+con:["Connecting…","连接中…","Menyambung…","இணைக்கிறது…"],
+cd:["Connected","已接通","Bersambung","இணைந்தது"],
+note:["She can see where you are, so you won’t need to explain again.","她能看到您在哪一步，您不需要再解释。","Dia boleh melihat di mana anda berada, jadi anda tidak perlu terangkan semula.","நீங்கள் எங்கே இருக்கிறீர்கள் என்று அவருக்குத் தெரியும், மீண்டும் விளக்க வேண்டாம்."],
+end:["End call","结束通话","Tamatkan panggilan","அழைப்பை முடிக்க"]};
+let cn=-1;
+function cst(){$('#cst').textContent=cn<0?UI.con[L]:UI.cd[L]+' · 00:'+String(cn).padStart(2,'0')}
+function applyUI(){$('#sumt').textContent=UI.sum[L];$('#inp').placeholder=UI.ph[L];$('#lost').textContent=UI.lost[L];$('#close').textContent=UI.close[L];$('#callbtn').textContent=UI.call[L];$('#team').textContent=UI.team[L];$('#note').textContent=UI.note[L];$('#end').textContent=UI.end[L];cst()}
 const LB=['EN','中文','BM','தமிழ்'];
-function setLang(n){L=n;$('#lg').textContent='🌐 '+LB[n];document.querySelectorAll('#lmenu button').forEach((b,k)=>b.classList.toggle('cur',k===n));$('#lmenu').classList.remove('on');render();fillOffer()}
+function setLang(n){L=n;$('#lg').textContent='🌐 '+LB[n];document.querySelectorAll('#lmenu button').forEach((b,k)=>b.classList.toggle('cur',k===n));$('#lmenu').classList.remove('on');render();fillOffer();applyUI()}
 function seg(n){document.querySelectorAll('#appts .seg button').forEach((b,k)=>b.classList.toggle('on',k===n));document.querySelectorAll('#appts .apl').forEach((d,k)=>d.classList.toggle('on',k===n))}
 $('#lg').onclick=e=>{e.stopPropagation();$('#lmenu').classList.toggle('on')};
 document.querySelectorAll('#lmenu button').forEach(b=>b.onclick=()=>setLang(+b.dataset.l));
 addEventListener('click',e=>{if(!e.target.closest('#lmenu,#lg'))$('#lmenu').classList.remove('on')});
 $('#lost').onclick=()=>{if(!offered){wrong=3;meter()}};
-$('#callbtn').onclick=()=>{$('#call').style.display='flex';$('#cst').textContent='Connecting…';let n=0;clearInterval(timer);setTimeout(()=>{timer=setInterval(()=>{n++;$('#cst').textContent='Connected · 00:'+String(n).padStart(2,'0')},1000)},1500)};
+$('#callbtn').onclick=()=>{$('#call').style.display='flex';cn=-1;cst();clearInterval(timer);setTimeout(()=>{cn=0;cst();timer=setInterval(()=>{cn++;cst()},1000)},1500)};
 $('#end').onclick=()=>{clearInterval(timer);$('#call').style.display='none';wrong=back=0;offered=false;$('#callbtn').style.display='none';meter();cur()?say(kk(cur())):say('greet')};
 $('#reset').onclick=()=>{$('#you').textContent='';setAI(false);idle()};
 $('#theme').onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue('--bg').trim()==='#0d1317';r.dataset.theme=d?'light':'dark'};
@@ -326,5 +350,10 @@ function openOffer(){fillOffer();$('#offer').classList.add('on')}
 $('#oav').innerHTML=av('#0b9b64');
 $('#oyes').onclick=()=>{$('#offer').classList.remove('on');$('#callbtn').onclick()};
 $('#ono').onclick=()=>{$('#offer').classList.remove('on');resetSig();say('cont');setTimeout(()=>{if(cur())say(kk(cur()))},2400)};
-addEventListener('resize',place);$('#summon .av').innerHTML=av('#0b9b64');$('#summon').onclick=()=>setAI(true);$('#close').onclick=()=>setAI(false);$('#tgrid').innerHTML=Object.keys(TY).map(k=>`<button class="tile" data-id="ty-${k}"><span class="ic">${TY[k].ic}</span>${TY[k].n}</button>`).join('');idle();setLang(0);
+addEventListener('resize',place);$('#summon .av').innerHTML=av('#0b9b64');$('#summon').onclick=()=>setAI(true);let pend=null;
+function askSwitch(k){pend=k;$('#stx').textContent=M.sw(TY[want].n,TY[k].n)[L];$('#syes').textContent='✓ '+M.keep(TY[k].n)[L];$('#sno').textContent=M.back(TY[want].n)[L];$('#sw').classList.add('on')}
+$('#sav').innerHTML=av('#0b9b64');
+$('#syes').onclick=()=>{$('#sw').classList.remove('on');const k=pend;setWant(k);rec('ty-'+k);i++;while(F[fl][i]&&F[fl][i].skip&&F[fl][i].skip())i++;showStep()};
+$('#sno').onclick=()=>{$('#sw').classList.remove('on');wrong++;meter();if(!offered&&cur())say(kk(cur()))};
+$('#close').onclick=()=>setAI(false);$('#tgrid').innerHTML=Object.keys(TY).map(k=>`<button class="tile" data-id="ty-${k}"><span class="ic">${TY[k].ic}</span>${TY[k].n}</button>`).join('');idle();setLang(0);
 </script></body></html>
