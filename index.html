@@ -92,6 +92,11 @@ body{font-family:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI','Not
 .lmenu{top:auto;bottom:128px;left:12px}.row2 #lg{flex:none;padding:7px 12px}
 #stx{font-size:20px;line-height:1.4;margin:4px 2px 14px;font-weight:700}
 .ring.soft{box-shadow:0 0 0 4px rgba(255,200,61,.28),0 0 20px 4px rgba(255,200,61,.55)}
+.sum .r{justify-content:flex-start;gap:12px;align-items:flex-start}.sum .r>span:first-child{width:26px;text-align:center}.sum .r>span:last-child{flex:1}.sum .r small{color:var(--mut);font-size:14px}
+.minibar{position:absolute;left:10px;right:10px;bottom:72px;z-index:20;background:var(--card);border-radius:24px;box-shadow:0 12px 34px rgba(10,40,35,.3);padding:12px;display:none;align-items:center;gap:12px}.minibar.on{display:flex}.minibar .av{width:54px;height:54px;border-color:#3b6fd4}.minibar .mt{flex:1;font-size:16px;line-height:1.3}.minibar .mt span{color:var(--pri);font-weight:700;font-size:15px}
+.minibar button{border:0;border-radius:12px;width:44px;height:44px;font-size:20px;cursor:pointer;background:var(--grey);color:var(--ink)}#mend{background:var(--warn)!important;color:#fff!important}
+.inmini .dock,.inmini #summon{display:none}.inmini .scr::after{height:100px}
+#mmin{position:absolute;top:14px;right:14px;border:2px solid var(--line);background:none;color:var(--ink);border-radius:20px;padding:6px 12px;font-size:15px;font-family:var(--fh);font-weight:600;cursor:pointer}
 </style></head><body>
 <div class="wrap">
 <div class="phone" id="phone">
@@ -187,7 +192,8 @@ body{font-family:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI','Not
  </div>
  <div class="nav"><button data-id="nav-home" class="act"><span class="i">🏠</span>Home</button><button data-id="nav-svc"><span class="i">▦</span>Services</button><button data-id="nav-prof"><span class="i">👥</span>Health Profiles</button></div>
  <div class="offer" id="sw"><div class="oc"><div class="av" id="sav"></div><p id="stx"></p><button class="btn" id="syes"></button><button class="btn alt" id="sno"></button></div></div>
- <div class="call" id="call"><div class="av" id="nurse"></div><h3>Nurse Lim</h3><div id="team" style="color:var(--mut)">Care Team</div>
+ <div class="minibar" id="minibar"><div class="av" id="mav"></div><div class="mt"><b>Nurse Lim</b><br><span id="mcst"></span></div><button id="mexp" aria-label="Expand">⤢</button><button id="mend" aria-label="End call">✕</button></div>
+ <div class="call" id="call"><button id="mmin" aria-label="Minimise">⌄ Minimise</button><div class="av" id="nurse"></div><h3>Nurse Lim</h3><div id="team" style="color:var(--mut)">Care Team</div>
   <div id="cst" style="font-size:20px;font-weight:700">Connecting…</div>
   <p id="note" style="color:var(--mut);font-size:15px">She can see where you are, so you won’t need to explain again.</p>
   <button class="btn" id="end" style="background:var(--warn);max-width:240px">End call</button></div>
@@ -236,7 +242,7 @@ const I=[{n:'book',re:/book|appoint|nuh|预约|temu|janji|சந்திப்�
 {n:'labs',re:/lab|result|report|报告|makmal|laporan|அறிக்கை/i,v:["Show my lab reports","看我的验血报告","Tunjuk laporan makmal saya","என் ஆய்வக அறிக்கைகளைக் காட்டு"]},
 {n:'chas',re:/chas|subsid|津贴|மானிய/i,v:["Show my CHAS card","看我的CHAS卡","Tunjuk kad CHAS saya","என் CHAS அட்டையைக் காட்டு"]},
 {n:'pay',re:/pay|bill|付|bayar|bil|கட்டண/i,v:["Pay my hospital bill","我要付医药费","Saya nak bayar bil hospital","மருத்துவமனை கட்டணம் செலுத்த வேண்டும்"]}];
-const F={book:[{s:'home',t:'t-appt',k:'b0'},{s:'appts',t:'a-new',k:'sa'},{s:'atype',t:'ty-?',any:'ty-',k:'ta0'},{s:'place',get t(){return 'pl-'+wp()},any:'pl-',skip:()=>bk.type==='tele',k:()=>ty().pl==='poly'?M.pp2(PL.poly[wp()][0]):M.ph2(PL.hosp[wp()][0])},{s:'sv',get t(){return 'sv-'+sv0()},any:'sv-',skip:()=>!ty().sv,k:()=>M.sv(ty().sv[sv0()])},{s:'slot',t:'sl-1',any:'sl-',k:'s4'},{s:'conf',t:'confirm',k:'s5'},{s:'done',t:null,k:'s6'}],
+const F={book:[{s:'home',t:'t-appt',k:'b0'},{s:'appts',t:'a-new',k:'sa'},{s:'atype',t:'ty-?',any:'ty-',k:'ta0'},{s:'place',get t(){return 'pl-'+wp()},any:'pl-',skip:()=>bk.type==='tele',k:()=>ty().pl==='poly'?M.pp2(PL.poly[wp()][0]):M.ph2(PL.hosp[wp()][0])},{s:'sv',get t(){return 'sv-'+sv0()},any:'sv-',skip:()=>!ty().sv,k:()=>M.sv(ty().sv[sv0()])},{s:'slot',t:'sl-1',any:'sl-',k:'s4'},{s:'conf',t:'confirm',soft:true,k:'s5'},{s:'done',t:null,k:'s6'}],
 refill:[{s:'home',t:'nav-svc',k:'r0'},{s:'svc',t:'t-refill',k:'r1'},{s:'rx',t:'rx-1',k:'r2'},{s:'rconf',t:'r-conf',k:'r3'},{s:'rdone',t:null,k:'r4'}],
 labs:[{s:'home',t:'t-lab',k:'l1'},{s:'labs',t:'lab-1',k:'l2'},{s:'labd',t:null,k:'l3'}],
 chas:[{s:'home',t:'t-chas',k:'c1'},{s:'chas',t:null,k:'c2'}],
@@ -298,10 +304,13 @@ function rec(id){if(id==='a-new'||id==='h-new'){bk={type:null,pl:0,sv:0,sl:0};re
 function nav2(id){if(id.startsWith('ty-'))return TY[id.slice(3)].pl==='tele'?'slot':'place';if(id.startsWith('pl-'))return ty().sv?'sv':'slot';if(id.startsWith('sv-'))return 'slot';return NX[id]}
 function summ(){const t=ty(),pn=t.pl==='tele'?'CareHub Video Consult':PL[t.pl][bk.pl][0];
  return `<div>${t.ic} <b>${t.n}</b></div>`+(t.sv?`<div>📝 ${t.sv[bk.sv]}</div>`:'')+`<div>🏥 <b>${pn}</b></div><div>📅 <b>${SL[bk.sl]}</b></div><div>💳 Subsidy: <b>CHAS Blue</b></div>`}
+function summ2(){const t=ty(),R=(i,a,b)=>`<div class="r"><span>${i}</span><span><b>${a}</b>${b?'<br><small>'+b+'</small>':''}</span></div>`;
+ let p;if(t.pl==='tele')p=['CareHub Video Consult','From home, on your phone'];else{const a=PL[t.pl];p=a[Math.min(bk.pl,a.length-1)];p=[p[0],'📍 '+p[1]]}
+ return R(t.ic,t.n)+(t.sv?R('📝',t.sv[Math.min(bk.sv,t.sv.length-1)]):'')+R(t.pl==='tele'?'💻':'🏥',p[0],p[1])+R('📅',SL[bk.sl])+R('💳','Subsidy','CHAS Blue')}
 function fill(id){const t=ty();
  if(id==='place'){$('#plt').textContent=t.pl==='poly'?'Choose a polyclinic':'Choose a hospital';$('#plist').innerHTML=PL[t.pl].map((p,k)=>`<button class="tap" data-id="pl-${k}">${p[0]}<small>${p[1]}${k?'':' · your usual'}</small></button>`).join('')}
  if(id==='sv')$('#slist').innerHTML=t.sv.map((s,k)=>`<button class="tap" data-id="sv-${k}">${s}${k===sv0()?'<small>'+(wantSv>=0?'Matches what you asked for':'Suggested for you')+'</small>':''}</button>`).join('');
- if(id==='conf'||id==='done')document.querySelector('#'+id+' .sum').innerHTML=summ()}
+ if(id==='conf'||id==='done')document.querySelector('#'+id+' .sum').innerHTML=summ2()}
 let L=0,fl=null,i=0,wrong=0,back=0,offered=false,key='greet',mi=0,timer,ai=false,cs='home',hist=[],bk={type:null,pl:0,sv:0,sl:0},want=null;
 const cur=()=>fl?F[fl][i]:null;
 function say(k){key=k;render()}
@@ -311,12 +320,12 @@ function show(id){cs=id;fill(id);$('#lmenu').classList.remove('on');document.que
  $('#ttl').innerHTML=id==='home'?LOGO:(TT[id]||'');
  const t=id==='svc'||id==='prof'?id:'home';document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('act',b.dataset.id==='nav-'+t));$('#scr').scrollTop=0}
 const tgt=t=>document.querySelector('.scr>div.on [data-id="'+t+'"]')||document.querySelector('.nav [data-id="'+t+'"]');
-function place(){const r=$('#ring'),st=cur(),el=st&&st.t&&tgt(st.t);if(!el){r.style.display='none';return}
+function place(){const r=$('#ring'),st=cur(),el=st&&st.t&&tgt(st.t);if(!el||$('#phone').classList.contains('inmini')||$('#call').style.display==='flex'){r.style.display='none';return}
  const p=$('#phone').getBoundingClientRect(),b=el.getBoundingClientRect();r.style.display='block';
- const ph=$('#phone'),o=7;r.style.left=(b.left-p.left-ph.clientLeft-o)+'px';r.style.top=(b.top-p.top-ph.clientTop-o)+'px';r.style.width=(b.width+2*o)+'px';r.style.height=(b.height+2*o)+'px';r.style.borderRadius=((parseFloat(getComputedStyle(el).borderTopLeftRadius)||14)+o)+'px';r.classList.toggle('soft',!!st.any);
+ const ph=$('#phone'),o=7;r.style.left=(b.left-p.left-ph.clientLeft-o)+'px';r.style.top=(b.top-p.top-ph.clientTop-o)+'px';r.style.width=(b.width+2*o)+'px';r.style.height=(b.height+2*o)+'px';r.style.borderRadius=((parseFloat(getComputedStyle(el).borderTopLeftRadius)||14)+o)+'px';r.classList.toggle('soft',!!(st.any||st.soft));
  if(el.closest('#scr')){const sb=$('#scr').getBoundingClientRect(),dk=$('.dock').getBoundingClientRect(),lo=ai?Math.min(sb.bottom,dk.top):sb.bottom,rt=b.top-o,rb=b.bottom+o;
   if(rb<=sb.top||rt>=lo)r.style.display='none';
-  else if(st.any)r.style.clipPath='inset('+(sb.top-rt)+'px -40px '+(rb-lo)+'px -40px)';
+  else if(st.any||st.soft)r.style.clipPath='inset('+(sb.top-rt)+'px -40px '+(rb-lo)+'px -40px)';
   else{r.style.clipPath='none';if(rt<sb.top||rb>lo)r.style.display='none'}}
  else r.style.clipPath='none'}
 function showStep(){const st=cur();show(st.s);say(kk(st));requestAnimationFrame(()=>{const el=st.t&&tgt(st.t);if(el&&el.closest('#scr')){const sb=$('#scr').getBoundingClientRect();$('#scr').scrollTop+=el.getBoundingClientRect().top-sb.top-70}place()})}
@@ -357,10 +366,11 @@ team:["Care Team","护理团队","Pasukan Penjagaan","பராமரிப்�
 con:["Connecting…","连接中…","Menyambung…","இணைக்கிறது…"],
 cd:["Connected","已接通","Bersambung","இணைந்தது"],
 note:["She can see where you are, so you won’t need to explain again.","她能看到您在哪一步，您不需要再解释。","Dia boleh melihat di mana anda berada, jadi anda tidak perlu terangkan semula.","நீங்கள் எங்கே இருக்கிறீர்கள் என்று அவருக்குத் தெரியும், மீண்டும் விளக்க வேண்டாம்."],
+mini:["⌄ Minimise","⌄ 最小化","⌄ Kecilkan","⌄ சிறிதாக்கு"],
 end:["End call","结束通话","Tamatkan panggilan","அழைப்பை முடிக்க"]};
 let cn=-1;
-function cst(){$('#cst').textContent=cn<0?UI.con[L]:UI.cd[L]+' · 00:'+String(cn).padStart(2,'0')}
-function applyUI(){$('#sumt').textContent=UI.sum[L];$('#inp').placeholder=UI.ph[L];$('#lost').textContent=UI.lost[L];$('#close').textContent=UI.close[L];$('#callbtn').textContent=UI.call[L];$('#team').textContent=UI.team[L];$('#note').textContent=UI.note[L];$('#end').textContent=UI.end[L];cst()}
+function cst(){$('#mcst').textContent=cn<0?UI.con[L]:UI.cd[L]+' · 00:'+String(cn).padStart(2,'0');$('#cst').textContent=cn<0?UI.con[L]:UI.cd[L]+' · 00:'+String(cn).padStart(2,'0')}
+function applyUI(){$('#sumt').textContent=UI.sum[L];$('#inp').placeholder=UI.ph[L];$('#lost').textContent=UI.lost[L];$('#close').textContent=UI.close[L];$('#callbtn').textContent=UI.call[L];$('#team').textContent=UI.team[L];$('#note').textContent=UI.note[L];$('#end').textContent=UI.end[L];$('#mmin').textContent=UI.mini[L];cst()}
 const LB=['EN','中文','BM','தமிழ்'];
 function setLang(n){L=n;$('#lg').textContent='🌐 '+LB[n];document.querySelectorAll('#lmenu button').forEach((b,k)=>b.classList.toggle('cur',k===n));$('#lmenu').classList.remove('on');render();fillOffer();applyUI()}
 function seg(n){document.querySelectorAll('#appts .seg button').forEach((b,k)=>b.classList.toggle('on',k===n));document.querySelectorAll('#appts .apl').forEach((d,k)=>d.classList.toggle('on',k===n))}
@@ -368,8 +378,8 @@ $('#lg').onclick=e=>{e.stopPropagation();$('#lmenu').classList.toggle('on')};
 document.querySelectorAll('#lmenu button').forEach(b=>b.onclick=()=>setLang(+b.dataset.l));
 addEventListener('click',e=>{if(!e.target.closest('#lmenu,#lg'))$('#lmenu').classList.remove('on')});
 $('#lost').onclick=()=>{if(!offered){wrong=3;meter()}};
-$('#callbtn').onclick=()=>{$('#call').style.display='flex';cn=-1;cst();clearInterval(timer);setTimeout(()=>{cn=0;cst();timer=setInterval(()=>{cn++;cst()},1000)},1500)};
-$('#end').onclick=()=>{clearInterval(timer);$('#call').style.display='none';wrong=back=0;offered=false;$('#callbtn').style.display='none';meter();cur()?say(kk(cur())):say('greet')};
+$('#callbtn').onclick=()=>{fl=null;i=0;place();callUI('full');cn=-1;cst();clearInterval(timer);setTimeout(()=>{cn=0;cst();timer=setInterval(()=>{cn++;cst()},1000)},1500)};
+$('#end').onclick=()=>{clearInterval(timer);callUI('off');wrong=back=0;offered=false;$('#callbtn').style.display='none';meter();cur()?say(kk(cur())):say('greet')};
 $('#reset').onclick=()=>{$('#you').textContent='';setAI(false);idle()};
 $('#theme').onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue('--bg').trim()==='#0d1317';r.dataset.theme=d?'light':'dark'};
 function fillOffer(){$('#otx').textContent=T.lost[L];$('#oyes').textContent='📞 '+T.yes[L];$('#ono').textContent=T.no[L]}
@@ -377,7 +387,9 @@ function openOffer(){fillOffer();$('#offer').classList.add('on')}
 $('#oav').innerHTML=av('#0b9b64');
 $('#oyes').onclick=()=>{$('#offer').classList.remove('on');$('#callbtn').onclick()};
 $('#ono').onclick=()=>{$('#offer').classList.remove('on');resetSig();say('cont');setTimeout(()=>{if(cur())say(kk(cur()))},2400)};
-addEventListener('resize',place);$('#summon .av').innerHTML=av('#0b9b64');$('#summon').onclick=()=>setAI(true);let pend=null;
+addEventListener('resize',place);$('#summon .av').innerHTML=av('#0b9b64');$('#summon').onclick=()=>setAI(true);function callUI(m){$('#call').style.display=m==='full'?'flex':'none';$('#minibar').classList.toggle('on',m==='mini');$('#phone').classList.toggle('inmini',m==='mini');place()}
+$('#mav').innerHTML=av('#3b6fd4');$('#mmin').onclick=()=>callUI('mini');$('#mexp').onclick=()=>callUI('full');$('#mend').onclick=()=>$('#end').onclick();
+let pend=null;
 function askSwitch(k){pend=k;$('#stx').textContent=M.sw(TY[want].n,TY[k].n)[L];$('#syes').textContent='✓ '+M.keep(TY[k].n)[L];$('#sno').textContent=M.back(TY[want].n)[L];$('#sw').classList.add('on')}
 $('#sav').innerHTML=av('#0b9b64');
 $('#syes').onclick=()=>{$('#sw').classList.remove('on');const k=pend;setWant(k);rec('ty-'+k);i++;while(F[fl][i]&&F[fl][i].skip&&F[fl][i].skip())i++;showStep()};
